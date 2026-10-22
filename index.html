@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" style="color-scheme: dark;"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>قائمة الطعام – Islem 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&amp;family=Cairo:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F8F5;--ink:#14261E;--muted:#5B6B63;--green:#0F5C43;--hero:#0F5C43;--hero-ink:#F6F8F5;
+  --line:#CBD6CD;--accent:#B3261E;--chip:#E6EDE7;color-scheme:light;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0D1612;--ink:#E7EEE9;--muted:#9AABA2;--green:#5CC49C;--hero:#123B2D;--hero-ink:#F1F6F2;--line:#2A3B32;--accent:#EE7A6F;--chip:#18261F;color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#0D1612;--ink:#E7EEE9;--muted:#9AABA2;--green:#5CC49C;--hero:#123B2D;--hero-ink:#F1F6F2;--line:#2A3B32;--accent:#EE7A6F;--chip:#18261F;color-scheme:dark}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 4rem)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Cairo",Tahoma,"Segoe UI",sans-serif;line-height:1.7}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.hero{background:var(--hero);color:var(--hero-ink);text-align:center;padding:4rem 1.25rem 3.5rem;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.11'%3E%3Crect x='10' y='10' width='28' height='28'/%3E%3Crect x='10' y='10' width='28' height='28' transform='rotate(45 24 24)'/%3E%3C/g%3E%3C/svg%3E")}
+.hero small{display:block;font-size:1.05rem;opacity:.85}
+.hero h1{font-family:"Amiri","Traditional Arabic",serif;font-weight:700;font-size:clamp(3rem,11vw,5.5rem);line-height:1.2;margin:.2rem 0 .6rem;outline:none}
+.editing .hero h1{border-bottom:2px dashed var(--hero-ink)}
+.hero p{max-width:34rem;margin:0 auto;opacity:.9}
+.hero .notice{margin:1.2rem auto 0;opacity:1;font-weight:600;border:1px solid var(--hero-ink);border-radius:10px;padding:.5rem 1rem}
+.hero .tp{margin:.8rem auto 0;opacity:1;font-size:1.25rem}
+.hero .tp input{width:6rem;font:inherit;padding:.1rem .5rem;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:.5rem;overflow-x:auto;padding:.75rem 1rem;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;font:inherit;font-weight:600;color:var(--ink);background:var(--chip);border:1px solid transparent;border-radius:999px;padding:.35rem 1.1rem;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--green);color:var(--bg)}
+button:focus-visible,input:focus-visible,[contenteditable]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:48rem;margin:0 auto;padding:1.5rem 1.25rem 6rem}
+.cat{margin-top:2.2rem}
+.cat h2{font-family:"Amiri",serif;font-size:2rem;color:var(--green);margin:0 0 .4rem;padding-bottom:.4rem;border-bottom:2px solid var(--green)}
+.item{display:grid;grid-template-columns:5.5rem 1fr;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.pic{width:5.5rem;height:5.5rem;border-radius:12px;overflow:hidden;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:2.4rem}
+.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.row{display:flex;align-items:baseline;gap:.7rem}
+.name{font-weight:700;font-size:1.1rem}
+.dots{flex:1;border-bottom:2px dotted var(--line);transform:translateY(-.3rem);min-width:1rem}
+.price{font-weight:700;color:var(--green);white-space:nowrap}
+.fr{color:var(--muted);font-size:.85rem;direction:ltr;text-align:right}
+.desc{margin:.2rem 0 0;color:var(--muted);font-size:.95rem}
+.star{display:inline-block;background:var(--accent);color:#fff;font-size:.75rem;font-weight:700;border-radius:4px;padding:0 .5rem;margin-inline-start:.5rem;vertical-align:middle}
+.ed{display:grid;gap:.4rem}
+.ed input[type=text],.ed input[type=number]{font:inherit;width:100%;padding:.3rem .5rem;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.ed .two{display:grid;grid-template-columns:1fr 7rem;gap:.4rem}
+.ed .acts{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;font-size:.9rem}
+.sm{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:6px;padding:.15rem .7rem;cursor:pointer}
+.sm.del{color:var(--accent)}
+.add{margin-top:.8rem}
+footer{border-top:1px solid var(--line);padding:2rem 1.25rem 5rem;text-align:center;color:var(--muted);font-size:.95rem}
+footer b{color:var(--ink)}
+.fab{position:fixed;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:12;display:flex;gap:.5rem}
+#theme{inset-inline-start:1rem}
+#editbar{inset-inline-end:1rem}
+.fab button{font:inherit;font-weight:600;background:var(--green);color:var(--bg);border:0;border-radius:999px;padding:.5rem 1.1rem;cursor:pointer}
+.fab button.alt{background:var(--chip);color:var(--ink)}
+#msg{font-size:.85rem;align-self:center;background:var(--chip);padding:.2rem .7rem;border-radius:999px}
+@media (max-width:480px){.item{grid-template-columns:4.2rem 1fr;gap:.7rem}.pic{width:4.2rem;height:4.2rem;font-size:1.9rem}.name{font-size:1rem}}
+</style>
+</head>
+<body class="">
+<header class="hero">
+  <small>فندق</small>
+  <h1 id="hn">Islem 2</h1>
+  <p class="notice">تنبيه: على زوارنا الكرام طلب وجبة العشاء قبل الساعة 12:00 ظهرًا.<span lang="fr" dir="ltr" style="display:block;font-weight:400;font-size:.95rem">Avis : nos chers clients sont priés de commander le dîner avant 12h00 (midi).</span></p>
+  <p class="tp" id="tp">سعر الوجبة الكاملة: <b>4000 د.ج</b></p>
+</header>
+<nav class="tabs" id="tabs" aria-label="أقسام القائمة"></nav>
+<main id="menu"></main>
+<footer>
+  <p>شكرًا لثقتكم.</p>
+</footer>
+<div class="fab" id="theme"><button type="button" id="themeBtn">الوضع الفاتح</button></div>
+<div class="fab" id="editbar" hidden="">
+  <span id="msg">جارٍ الحفظ…</span>
+  <button type="button" id="editBtn" hidden="">تعديل القائمة</button>
+  <button type="button" id="saveBtn">حفظ ونشر</button>
+  <button type="button" class="alt" id="cancelBtn">إلغاء</button>
+</div>
+<script type="application/json" id="data">{"name":"Islem 2","cats":[{"id":"sat","t":"Samedi","e":"🍽️","items":[{"n":"حريرة","f":"Hrira","d":"","p":0,"img":"images/a9afcb74586ba89e776999a721949385.jpg"},{"n":"طاجين كرات اللحم المفروم بالبرقوق","f":"Tajine à la boulette de viande hachée / prunes","d":"","p":0,"img":"images/83e77b2ab8e84993b27e59299e0ecbc4.jpg"},{"n":"سلطة سيزر","f":"Salade césar","d":"","p":0,"img":"images/e14456886a218a41b8197f9deddda7f3.jpg"}]},{"id":"sun","t":"Dimanche","e":"🍽️","items":[{"n":"شوربة أو حريرة","f":"Chorba / Hrira","d":"","p":0,"img":"images/11768e53aee46d519df105c53c980289.jpg"},{"n":"سلطة","f":"Salade","d":"","p":0,"img":"images/143e90bd2ead99224f7c0fdbb022cc86.jpg"},{"n":"طاجين الزيتون بالدجاج أو اللحم","f":"Tajine olive au poulet / viande","d":"","p":0,"img":"images/45af7ec06ff6fff9c7ff08136f1a98b9.jpg"}]},{"id":"mon","t":"Lundi","e":"🍽️","items":[{"n":"شوربة السمك","f":"Soupe de poisson","d":"","p":0,"img":"images/838014a2a75bbaef43608b029068024e.jpg"},{"n":"سلطة","f":"Salade","d":"","p":0,"img":"images/97b81410f11a5ba7743c5e989b001628.jpg"},{"n":"بايّيا أو طاجين السمك","f":"Paëlla ou tajine de poisson","d":"","p":0,"img":"images/832c002ad59ed92f15c41817368e4788.jpg"}]},{"id":"tue","t":"Mardi","e":"🍽️","items":[{"n":"أنتريكوت بصلصة باريسية","f":"Entrecôte à la sauce parisienne","d":"","p":0,"img":"images/1ee406fe6abc87395c2a107595888238.jpg"},{"n":"سلطة سيزر","f":"Salade césar","d":"","p":0,"img":"images/10bd042e43c6520c93bfc84a203a1792.jpg"},{"n":"حريرة","f":"Hrira","d":"","p":0,"img":"images/19c65c80ab1b7634962b873bb40b724b.jpg"}]},{"id":"wed","t":"Mercredi","e":"🍽️","items":[{"n":"طاجين مطوّم","f":"Tajine mtewem","d":"","p":0,"img":"images/9cc2749df35380b5beaecd5e45757058.jpg"},{"n":"سلطة","f":"Salade","d":"","p":0,"img":"images/14e51fe477e559f0b10b03ad22cbae9c.jpg"},{"n":"حريرة","f":"Hrira","d":"","p":0,"img":"images/bc4af7ca825c401503a517e0ff166c33.jpg"}]},{"id":"thu","t":"Jeudi","e":"🍽️","items":[{"n":"شوربة أو حريرة","f":"Chorba / Hrira","d":"","p":0,"img":"images/953181fb5e0d637e309ebf94a7dcb757.jpg"},{"n":"طاجين اللحم المفروم أو المرقاز","f":"Tajine viande hachée / merguez","d":"","p":0,"img":"images/e58fa1d07bf115f75639c3337554378b.jpg"},{"n":"سلطة","f":"Salade","d":"","p":0,"img":"images/a16ef68f2cd755c9ccd7eacac539878b.jpg"}]},{"id":"fri","t":"Vendredi","e":"🍽️","items":[{"n":"حريرة","f":"Hrira","d":"","p":0,"img":"images/74adba0fd675c8c0a1e15061b23d29b7.jpg"},{"n":"فخذ دجاج مشوي","f":"Cuisse de poulet grillée","d":"","p":0,"img":"images/fad1e2eb2ec497252eaed373db2c53af.jpg"},{"n":"سلطة","f":"Salade","d":"","p":0,"img":"images/3bd59134851244510fb7765698044361.jpg"},{"n":"غداء الجمعة: كسكسي تلمساني بالخضر واللحم والزبيب","f":"Déjeuner du vendredi : couscous de Tlemcen au légume, viande, raisin sec","d":"","p":0,"img":"images/62c123d595c87206bd00d2fb3af88c00.jpg"}]}],"price":4000}</script>
+<script>
+var S=JSON.parse(document.getElementById("data").textContent),
+    tabs=document.getElementById("tabs"),menu=document.getElementById("menu"),hn=document.getElementById("hn"),
+    cur=["sun","mon","tue","wed","thu","fri","sat"][new Date().getDay()],editing=false,backup=null,A=null,AS=null,root=document.documentElement;
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function pic(c,i){return '<div class="pic">'+(i.img?'<img src="'+esc(i.img)+'" alt="'+esc(i.n)+'" loading="lazy">':c.e)+'</div>'}
+function view(c,i){
+  return '<div class="item">'+pic(c,i)+'<div><div class="row"><span class="name">'+esc(i.n)+(i.s?'<span class="star">طبق اليوم</span>':'')+
+  '</span>'+(i.p?'<span class="dots"></span><span class="price">'+esc(i.p)+' د.ج</span>':'')+'</div><div class="fr">'+esc(i.f)+'</div>'+
+  (i.d?'<p class="desc">'+esc(i.d)+'</p>':'')+'</div></div>'}
+function edit(c,ci,i,ii){
+  var k=' data-c="'+ci+'" data-i="'+ii+'"';
+  return '<div class="item">'+pic(c,i)+'<div class="ed"><div class="two"><input type="text" data-k="n"'+k+' value="'+esc(i.n)+'" aria-label="الاسم"><input type="number" min="0" data-k="p"'+k+' value="'+esc(i.p)+'" aria-label="السعر"></div>'+
+  '<input type="text" dir="ltr" data-k="f"'+k+' value="'+esc(i.f)+'" aria-label="الاسم بالفرنسية" placeholder="Français">'+
+  '<input type="text" data-k="d"'+k+' value="'+esc(i.d)+'" aria-label="الوصف" placeholder="وصف قصير">'+
+  '<div class="acts"><button class="sm" type="button" data-a="photo"'+k+'>'+(i.img?'تغيير الصورة':'إضافة صورة')+'</button>'+
+  (i.img?'<button class="sm" type="button" data-a="nophoto"'+k+'>حذف الصورة</button>':'')+
+  '<label><input type="checkbox" data-k="s"'+k+(i.s?' checked':'')+'> طبق اليوم</label>'+
+  '<button class="sm del" type="button" data-a="del"'+k+'>حذف الطبق</button></div></div></div>'}
+function render(){
+  tabs.innerHTML="";
+  S.cats.forEach(function(c){
+    var b=document.createElement("button");b.type="button";b.textContent=c.t;b.setAttribute("aria-pressed",c.id===cur);
+    b.onclick=function(){cur=c.id;render();window.scrollTo({top:tabs.offsetTop,behavior:"smooth"})};tabs.appendChild(b)});
+  menu.innerHTML=S.cats.map(function(c,ci){
+    if(cur!=="all"&&c.id!==cur)return"";
+    return '<section class="cat"><h2>'+esc(c.t)+'</h2>'+c.items.map(function(i,ii){return editing?edit(c,ci,i,ii):view(c,i)}).join("")+
+    (editing?'<button class="sm add" type="button" data-a="add" data-c="'+ci+'">+ إضافة طبق</button>':'')+'</section>'}).join("");
+  hn.textContent=S.name;
+  if(S.price==null)S.price=4000;
+  var tp=document.getElementById("tp");
+  tp.innerHTML=editing?'سعر الوجبة (د.ج): <input type="number" min="0" id="tpi" value="'+esc(S.price)+'">':(S.price?'سعر الوجبة الكاملة: <b>'+esc(S.price)+' د.ج</b>':'');
+  var q=document.getElementById("tpi");if(q)q.oninput=function(){S.price=Number(q.value)};
+}
+menu.addEventListener("input",function(e){
+  var t=e.target,k=t.dataset.k;if(!k)return;var i=S.cats[t.dataset.c].items[t.dataset.i];
+  i[k]=k==="s"?(t.checked?1:0):k==="p"?Number(t.value):t.value});
+menu.addEventListener("click",function(e){
+  var b=e.target.closest("[data-a]");if(!b)return;var a=b.dataset.a,c=S.cats[b.dataset.c];
+  if(a==="add"){c.items.push({n:"طبق جديد",f:"",d:"",p:0});render()}
+  else{var i=c.items[b.dataset.i];
+    if(a==="del"&&confirm("حذف هذا الطبق؟")){c.items.splice(b.dataset.i,1);render()}
+    if(a==="nophoto"){delete i.img;render()}
+    if(a==="photo"){pick(i)}}});
+function pick(i){
+  if(!AS){flash("رفع الصور غير متاح لحسابك");return}
+  var f=document.createElement("input");f.type="file";f.accept="image/*";
+  f.onchange=function(){if(!f.files[0])return;flash("جارٍ رفع الصورة…");
+    AS.upload(f.files[0]).then(function(r){i.img=r.url;flash("تم رفع الصورة");render()}).catch(function(){flash("تعذّر رفع الصورة")})};
+  f.click()}
+function flash(t){var m=document.getElementById("msg");m.textContent=t;m.hidden=false;clearTimeout(flash.t);flash.t=setTimeout(function(){m.hidden=true},3500)}
+hn.addEventListener("input",function(){S.name=hn.textContent});
+function setEdit(on){
+  editing=on;document.body.classList.toggle("editing",on);hn.contentEditable=on?"plaintext-only":"false";
+  document.getElementById("editBtn").hidden=on;document.getElementById("saveBtn").hidden=!on;document.getElementById("cancelBtn").hidden=!on;
+  document.getElementById("theme").hidden=on;render()}
+function buildDoc(){
+  var c=root.cloneNode(true);
+  c.querySelector("#menu").innerHTML="";c.querySelector("#tabs").innerHTML="";
+  c.querySelector("#data").textContent=JSON.stringify(S).replace(/</g,"\\u003c");
+  c.querySelector("#editbar").hidden=true;c.querySelector("#theme").hidden=false;
+  c.querySelector("#hn").removeAttribute("contenteditable");c.querySelector("#hn").textContent=S.name;
+  c.querySelector("body").classList.remove("editing");c.removeAttribute("data-theme");
+  c.querySelector("title").textContent="قائمة الطعام – "+S.name;
+  return "<!DOCTYPE html>\n"+c.outerHTML}
+document.getElementById("editBtn").onclick=function(){backup=JSON.stringify(S);setEdit(true)};
+document.getElementById("cancelBtn").onclick=function(){S=JSON.parse(backup);setEdit(false)};
+document.getElementById("saveBtn").onclick=function(){
+  flash("جارٍ الحفظ…");
+  A.publish(buildDoc()).catch(function(e){flash(e&&e.code==="conflict"?"تم تحديث الصفحة من مكان آخر":"تعذّر الحفظ")})};
+var tb=document.getElementById("themeBtn");
+function isDark(){var t=root.getAttribute("data-theme");return t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function lbl(){tb.textContent=isDark()?"الوضع الفاتح":"الوضع الداكن"}
+tb.onclick=function(){root.setAttribute("data-theme",isDark()?"light":"dark");lbl()};
+lbl();render();
+</script>
+</body></html>
